@@ -36,7 +36,7 @@ export const projectSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(2, "Project name is required"),
   description: z.string().min(10, "Description should be at least 10 characters"),
-  technologies: z.array(z.string()).min(1, "At least one technology is required"),
+  technologies: z.string().min(1, "At least one technology is required"),
   link: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });
 
