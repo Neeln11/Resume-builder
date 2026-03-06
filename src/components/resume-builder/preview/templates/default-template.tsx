@@ -17,7 +17,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
         personalDetails.leetcode;
 
     return (
-        <div className="p-8 max-w-[21cm] mx-auto bg-white text-slate-900 font-sans min-h-[29.7cm]">
+        <div className="p-8 max-w-[21cm] mx-auto bg-white text-slate-900 font-sans min-h-[29.7cm] break-words">
             {/* Header section */}
             {hasPersonalDetails && (
                 <header className="mb-6 border-b border-slate-300 pb-4 text-center">
