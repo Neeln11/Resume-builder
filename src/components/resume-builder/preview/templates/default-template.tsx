@@ -81,13 +81,13 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-3 border-b pb-1" style={{ color: themeConfig?.experience || "#1e293b", borderColor: themeConfig?.experience || "#e2e8f0" }}>Experience</h2>
                                     <div className="space-y-4">
                                         {experience.map((exp, index) => (
-                                            <div key={index}>
-                                                <div className="flex justify-between items-start mb-1">
-                                                    <div>
-                                                        <h3 className="font-semibold text-slate-800">{exp.role}</h3>
-                                                        <p className="text-sm text-slate-600 font-medium">{exp.company}</p>
+                                            <div key={index} className="min-w-0">
+                                                <div className="flex justify-between items-start mb-1 min-w-0">
+                                                    <div className="min-w-0">
+                                                        <h3 className="font-semibold text-slate-800 break-words [overflow-wrap:anywhere]">{exp.role}</h3>
+                                                        <p className="text-sm text-slate-600 font-medium break-words [overflow-wrap:anywhere]">{exp.company}</p>
                                                     </div>
-                                                    <div className="text-sm text-slate-500 whitespace-nowrap">
+                                                    <div className="text-sm text-slate-500 whitespace-nowrap ml-4 shrink-0">
                                                         {exp.startDate} {exp.endDate ? `- ${exp.endDate}` : "- Present"}
                                                     </div>
                                                 </div>
@@ -105,19 +105,19 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-3 border-b pb-1" style={{ color: themeConfig?.projects || "#1e293b", borderColor: themeConfig?.projects || "#e2e8f0" }}>Projects</h2>
                                     <div className="space-y-4">
                                         {projects.map((project, index) => (
-                                            <div key={index}>
-                                                <div className="flex justify-between items-start mb-1">
-                                                    <h3 className="font-semibold text-slate-800">
+                                            <div key={index} className="min-w-0">
+                                                <div className="flex justify-between items-start mb-1 min-w-0">
+                                                    <h3 className="font-semibold text-slate-800 break-words [overflow-wrap:anywhere] min-w-0">
                                                         {project.name}
                                                         {project.link && (
-                                                            <a href={project.link} target="_blank" rel="noreferrer" className="text-blue-600 text-xs ml-2 hover:underline font-normal">
+                                                            <a href={project.link} target="_blank" rel="noreferrer" className="text-blue-600 text-xs ml-2 hover:underline font-normal inline-block">
                                                                 [Link]
                                                             </a>
                                                         )}
                                                     </h3>
                                                 </div>
                                                 {project.technologies && (
-                                                    <p className="text-xs font-medium text-slate-500 mb-1">Technologies: {project.technologies}</p>
+                                                    <p className="text-xs font-medium text-slate-500 mb-1 break-words [overflow-wrap:anywhere]">Technologies: {project.technologies}</p>
                                                 )}
                                                 {project.description && (
                                                     <p className="text-sm text-slate-700 whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{project.description}</p>
@@ -133,13 +133,13 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-3 border-b pb-1" style={{ color: themeConfig?.education || "#1e293b", borderColor: themeConfig?.education || "#e2e8f0" }}>Education</h2>
                                     <div className="space-y-4">
                                         {education.map((edu, index) => (
-                                            <div key={index}>
-                                                <div className="flex justify-between items-start mb-1">
-                                                    <div>
-                                                        <h3 className="font-semibold text-slate-800">{edu.degree}</h3>
-                                                        <p className="text-sm text-slate-600 font-medium">{edu.institution}</p>
+                                            <div key={index} className="min-w-0">
+                                                <div className="flex justify-between items-start mb-1 min-w-0">
+                                                    <div className="min-w-0">
+                                                        <h3 className="font-semibold text-slate-800 break-words [overflow-wrap:anywhere]">{edu.degree}</h3>
+                                                        <p className="text-sm text-slate-600 font-medium break-words [overflow-wrap:anywhere]">{edu.institution}</p>
                                                     </div>
-                                                    <div className="text-sm text-slate-500 whitespace-nowrap">
+                                                    <div className="text-sm text-slate-500 whitespace-nowrap ml-4 shrink-0">
                                                         {edu.startDate} {edu.endDate ? `- ${edu.endDate}` : "- Present"}
                                                     </div>
                                                 </div>
