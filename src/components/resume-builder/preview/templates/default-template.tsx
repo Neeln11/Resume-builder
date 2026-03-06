@@ -61,23 +61,23 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
             )}
 
             {/* Body sections sorted dynamically */}
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full min-w-0">
                 {sectionOrder && sectionOrder.map((sectionId) => {
                     switch (sectionId) {
                         case "summary":
                             return summary?.summary && (
-                                <section key="summary" className="mb-6 order-none">
+                                <section key="summary" className="mb-6 order-none w-full min-w-0">
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-2" style={{ color: themeConfig?.summary || "#1e293b" }}>
                                         {summary.heading || "Professional Summary"}
                                     </h2>
-                                    <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-wrap">
+                                    <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-wrap break-words [overflow-wrap:anywhere]">
                                         {summary.summary}
                                     </p>
                                 </section>
                             );
                         case "experience":
                             return experience && experience.length > 0 && (
-                                <section key="experience" className="mb-6 order-none">
+                                <section key="experience" className="mb-6 order-none w-full min-w-0">
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-3 border-b pb-1" style={{ color: themeConfig?.experience || "#1e293b", borderColor: themeConfig?.experience || "#e2e8f0" }}>Experience</h2>
                                     <div className="space-y-4">
                                         {experience.map((exp, index) => (
@@ -92,7 +92,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                                     </div>
                                                 </div>
                                                 {exp.description && (
-                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap">{exp.description}</p>
+                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{exp.description}</p>
                                                 )}
                                             </div>
                                         ))}
@@ -101,7 +101,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                             );
                         case "projects":
                             return projects && projects.length > 0 && (
-                                <section key="projects" className="mb-6 order-none">
+                                <section key="projects" className="mb-6 order-none w-full min-w-0">
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-3 border-b pb-1" style={{ color: themeConfig?.projects || "#1e293b", borderColor: themeConfig?.projects || "#e2e8f0" }}>Projects</h2>
                                     <div className="space-y-4">
                                         {projects.map((project, index) => (
@@ -120,7 +120,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                                     <p className="text-xs font-medium text-slate-500 mb-1">Technologies: {project.technologies}</p>
                                                 )}
                                                 {project.description && (
-                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap">{project.description}</p>
+                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{project.description}</p>
                                                 )}
                                             </div>
                                         ))}
@@ -129,7 +129,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                             );
                         case "education":
                             return education && education.length > 0 && (
-                                <section key="education" className="mb-6 order-none">
+                                <section key="education" className="mb-6 order-none w-full min-w-0">
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-3 border-b pb-1" style={{ color: themeConfig?.education || "#1e293b", borderColor: themeConfig?.education || "#e2e8f0" }}>Education</h2>
                                     <div className="space-y-4">
                                         {education.map((edu, index) => (
@@ -144,7 +144,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                                     </div>
                                                 </div>
                                                 {edu.description && (
-                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap">{edu.description}</p>
+                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{edu.description}</p>
                                                 )}
                                             </div>
                                         ))}
@@ -153,7 +153,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                             );
                         case "skills":
                             return skills && skills.length > 0 && (
-                                <section key="skills" className="mb-6 order-none">
+                                <section key="skills" className="mb-6 order-none w-full min-w-0">
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-3 border-b pb-1" style={{ color: themeConfig?.skills || "#1e293b", borderColor: themeConfig?.skills || "#e2e8f0" }}>Skills</h2>
                                     <div className="flex flex-wrap gap-2">
                                         {skills.map((skill, index) => (
