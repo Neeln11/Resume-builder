@@ -160,16 +160,22 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
                 const fullName = cleanData.personalDetails?.fullName || 'resume';
 
-                const opt = {
-                    margin: 0,
-                    filename: `${fullName}.pdf`,
-                    image: { type: 'jpeg' as const, quality: 0.98 },
-                    html2canvas: {
+                try {
+                    // Dynamically import to keep bundle size small & avoid SSR issues
+                    const [html2canvasModule, jsPDFModule] = await Promise.all([
+                        import('html2canvas'),
+                        import('jspdf'),
+                    ]);
+                    const html2canvas = html2canvasModule.default;
+                    const jsPDF = jsPDFModule.default;
+
+                    // Take a screenshot of the resume element
+                    const canvas = await html2canvas(element as HTMLElement, {
                         scale: 2,
                         useCORS: true,
                         onclone: (clonedDoc: Document) => {
                             // html2canvas cannot parse oklch() colors used by Tailwind v4.
-                            // We override CSS variables on the cloned document root with hex equivalents.
+                            // Override CSS variables with hex equivalents on the cloned doc.
                             const root = clonedDoc.documentElement;
                             root.style.setProperty('--background', '#ffffff');
                             root.style.setProperty('--foreground', '#1a1a1a');
@@ -190,13 +196,36 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                             root.style.setProperty('--input', '#e4e4e7');
                             root.style.setProperty('--ring', '#a1a1aa');
                         }
-                    },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
-                };
+                    });
 
-                try {
-                    const html2pdf = (await import('html2pdf.js')).default;
-                    await html2pdf().set(opt).from(element).save();
+                    // A4 dimensions in mm
+                    const pdfWidth = 210;
+                    const pdfHeight = 297;
+
+                    const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                    const imgWidth = canvas.width;
+                    const imgHeight = canvas.height;
+
+                    // Calculate height to maintain aspect ratio
+                    const ratio = pdfWidth / imgWidth;
+                    const scaledHeight = (imgHeight * ratio);
+
+                    const pdf = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4',
+                    });
+
+                    // Add image page by page if content is taller than one A4 page
+                    let yPos = 0;
+                    while (yPos < scaledHeight) {
+                        if (yPos > 0) pdf.addPage();
+                        pdf.addImage(imgData, 'JPEG', 0, -yPos, pdfWidth, scaledHeight);
+                        yPos += pdfHeight;
+                    }
+
+                    pdf.save(`${fullName}.pdf`);
+
                     if (onReset) setTimeout(() => onReset(), 500);
                 } catch (err) {
                     console.error("PDF generation failed, falling back to print:", err);
