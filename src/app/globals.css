@@ -124,3 +124,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  @media print {
+    @page {
+      margin: 0;
+      size: auto;
+    }
+    
+    body {
+      padding-top: 2cm;
+      padding-bottom: 2cm;
+    }
+  }
+}
