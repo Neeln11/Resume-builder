@@ -150,12 +150,35 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
             // ALWAYS trigger the print dialog but wait slightly so React state can update
             setTimeout(() => {
-                alert("Validation successful! Your resume is ready to print.");
-                window.print();
+                alert("Validation successful! Your resume is downloading...");
 
-                // Reset form state after print
-                if (onReset) {
-                    setTimeout(() => onReset(), 500);
+                // Find the preview container dynamically by its structure or a new ID if we added one
+                // Since we didn't add an ID to ResumePreview yet, we can target the known structure
+                const element = document.querySelector('.origin-top.bg-white');
+
+                if (element) {
+                    const opt = {
+                        margin: 0,
+                        filename: `${cleanData.personalDetails?.fullName || 'resume'}.pdf`,
+                        image: { type: 'jpeg' as const, quality: 0.98 },
+                        html2canvas: { scale: 2, useCORS: true },
+                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
+                    };
+
+                    // @ts-ignore - html2pdf is imported dynamically or added as global
+                    import('html2pdf.js').then((html2pdf) => {
+                        html2pdf.default().set(opt).from(element as HTMLElement).save().then(() => {
+                            if (onReset) {
+                                setTimeout(() => onReset(), 500);
+                            }
+                        });
+                    });
+                } else {
+                    console.error("Could not find the resume preview element to convert to PDF");
+                    window.print(); // Fallback
+                    if (onReset) {
+                        setTimeout(() => onReset(), 500);
+                    }
                 }
             }, 500);
         } else {
