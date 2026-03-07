@@ -6,7 +6,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
-**Live Demo:** [https://resume-builder-mu-two-69.vercel.app](resume-builder-mu-two-69.vercel.app)
+**Live Demo:** [https://resume-builder-mu-two-69.vercel.app](https://resume-builder-mu-two-69.vercel.app/)
 
 A highly interactive, modern, and beautiful Resume Builder application. Designed with a multi-step user experience, complete with live previews, cloud-based history saving via Google Authentication, and a direct print-to-PDF export mechanism.
 
