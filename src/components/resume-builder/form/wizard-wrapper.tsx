@@ -148,14 +148,60 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                 .then(() => console.log("Successfully saved to Firestore."))
                 .catch((error: any) => console.error("Error saving resume to Firebase:", error));
 
-            // ALWAYS trigger the print dialog but wait slightly so React state can update
-            setTimeout(() => {
-                alert("Validation successful! Your resume is ready to print.");
-                window.print();
+            // Generate PDF directly without the print dialog
+            setTimeout(async () => {
+                const element = document.getElementById('resume-preview-container');
 
-                // Reset form state after print
-                if (onReset) {
-                    setTimeout(() => onReset(), 500);
+                if (!element) {
+                    console.error("Could not find resume preview element");
+                    window.print();
+                    return;
+                }
+
+                const fullName = cleanData.personalDetails?.fullName || 'resume';
+
+                const opt = {
+                    margin: 0,
+                    filename: `${fullName}.pdf`,
+                    image: { type: 'jpeg' as const, quality: 0.98 },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        onclone: (clonedDoc: Document) => {
+                            // html2canvas cannot parse oklch() colors used by Tailwind v4.
+                            // We override CSS variables on the cloned document root with hex equivalents.
+                            const root = clonedDoc.documentElement;
+                            root.style.setProperty('--background', '#ffffff');
+                            root.style.setProperty('--foreground', '#1a1a1a');
+                            root.style.setProperty('--card', '#ffffff');
+                            root.style.setProperty('--card-foreground', '#1a1a1a');
+                            root.style.setProperty('--popover', '#ffffff');
+                            root.style.setProperty('--popover-foreground', '#1a1a1a');
+                            root.style.setProperty('--primary', '#1a1a1a');
+                            root.style.setProperty('--primary-foreground', '#fafafa');
+                            root.style.setProperty('--secondary', '#f4f4f5');
+                            root.style.setProperty('--secondary-foreground', '#1a1a1a');
+                            root.style.setProperty('--muted', '#f4f4f5');
+                            root.style.setProperty('--muted-foreground', '#71717a');
+                            root.style.setProperty('--accent', '#f4f4f5');
+                            root.style.setProperty('--accent-foreground', '#1a1a1a');
+                            root.style.setProperty('--destructive', '#ef4444');
+                            root.style.setProperty('--border', '#e4e4e7');
+                            root.style.setProperty('--input', '#e4e4e7');
+                            root.style.setProperty('--ring', '#a1a1aa');
+                        }
+                    },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
+                };
+
+                try {
+                    const html2pdf = (await import('html2pdf.js')).default;
+                    await html2pdf().set(opt).from(element).save();
+                    if (onReset) setTimeout(() => onReset(), 500);
+                } catch (err) {
+                    console.error("PDF generation failed, falling back to print:", err);
+                    window.print();
+                    if (onReset) setTimeout(() => onReset(), 500);
                 }
             }, 500);
         } else {

@@ -15,7 +15,7 @@ export default function ResumePreview({ data, templateConfig }: ResumePreviewPro
 
     return (
         <div className="w-full h-full bg-white shadow-lg overflow-y-auto print:shadow-none">
-            <div className="origin-top bg-white print:w-[210mm] print:min-h-[297mm]">
+            <div id="resume-preview-container" className="origin-top bg-white print:w-[210mm] print:min-h-[297mm]">
                 {/* Render the selected template */}
                 <DefaultTemplate data={data} />
             </div>
