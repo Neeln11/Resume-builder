@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -48,6 +48,10 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
         defaultValues: initialData,
         mode: "onBlur",
     });
+
+    // Snapshot of form data captured just before login modal opens.
+    // Used so login doesn't trigger a form reset before we run the PDF.
+    const pendingFormDataRef = useRef<ResumeData | null>(null);
 
     const {
         watch,
@@ -124,6 +128,8 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
             const currentUser = user || auth.currentUser;
 
             if (!currentUser) {
+                // Snapshot the form data NOW before the login modal can cause any re-renders
+                pendingFormDataRef.current = methods.getValues();
                 console.log("No authenticated user found, opening login modal.");
                 setIsLoginModalOpen(true);
                 return;
@@ -161,54 +167,34 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                 const fullName = cleanData.personalDetails?.fullName || 'resume';
 
                 try {
-                    // Dynamically import to keep bundle size small & avoid SSR issues
-                    const [html2canvasModule, jsPDFModule] = await Promise.all([
-                        import('html2canvas'),
+                    // html-to-image uses the browser's native rendering pipeline so it
+                    // correctly handles modern CSS color functions like lab() and oklch()
+                    // used by Tailwind v4 — unlike html2canvas which crashes on them.
+                    const [htmlToImageModule, jsPDFModule] = await Promise.all([
+                        import('html-to-image'),
                         import('jspdf'),
                     ]);
-                    const html2canvas = html2canvasModule.default;
+                    const { toJpeg } = htmlToImageModule;
                     const jsPDF = jsPDFModule.default;
 
-                    // Take a screenshot of the resume element
-                    const canvas = await html2canvas(element as HTMLElement, {
-                        scale: 2,
-                        useCORS: true,
-                        onclone: (clonedDoc: Document) => {
-                            // html2canvas cannot parse oklch() colors used by Tailwind v4.
-                            // Override CSS variables with hex equivalents on the cloned doc.
-                            const root = clonedDoc.documentElement;
-                            root.style.setProperty('--background', '#ffffff');
-                            root.style.setProperty('--foreground', '#1a1a1a');
-                            root.style.setProperty('--card', '#ffffff');
-                            root.style.setProperty('--card-foreground', '#1a1a1a');
-                            root.style.setProperty('--popover', '#ffffff');
-                            root.style.setProperty('--popover-foreground', '#1a1a1a');
-                            root.style.setProperty('--primary', '#1a1a1a');
-                            root.style.setProperty('--primary-foreground', '#fafafa');
-                            root.style.setProperty('--secondary', '#f4f4f5');
-                            root.style.setProperty('--secondary-foreground', '#1a1a1a');
-                            root.style.setProperty('--muted', '#f4f4f5');
-                            root.style.setProperty('--muted-foreground', '#71717a');
-                            root.style.setProperty('--accent', '#f4f4f5');
-                            root.style.setProperty('--accent-foreground', '#1a1a1a');
-                            root.style.setProperty('--destructive', '#ef4444');
-                            root.style.setProperty('--border', '#e4e4e7');
-                            root.style.setProperty('--input', '#e4e4e7');
-                            root.style.setProperty('--ring', '#a1a1aa');
-                        }
+                    // Render the resume element to a JPEG data URL
+                    const imgData = await toJpeg(element as HTMLElement, {
+                        quality: 0.98,
+                        pixelRatio: 2,
+                        backgroundColor: '#ffffff',
                     });
+
+                    // Get element dimensions for correct PDF sizing
+                    const rect = element.getBoundingClientRect();
+                    const imgWidthPx = rect.width * 2;  // pixelRatio: 2
+                    const imgHeightPx = rect.height * 2;
 
                     // A4 dimensions in mm
                     const pdfWidth = 210;
                     const pdfHeight = 297;
 
-                    const imgData = canvas.toDataURL('image/jpeg', 0.98);
-                    const imgWidth = canvas.width;
-                    const imgHeight = canvas.height;
-
-                    // Calculate height to maintain aspect ratio
-                    const ratio = pdfWidth / imgWidth;
-                    const scaledHeight = (imgHeight * ratio);
+                    const ratio = pdfWidth / imgWidthPx;
+                    const scaledHeight = imgHeightPx * ratio;
 
                     const pdf = new jsPDF({
                         orientation: 'portrait',
@@ -227,10 +213,9 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                     pdf.save(`${fullName}.pdf`);
 
                     if (onReset) setTimeout(() => onReset(), 500);
-                } catch (err) {
-                    console.error("PDF generation failed, falling back to print:", err);
-                    window.print();
-                    if (onReset) setTimeout(() => onReset(), 500);
+                } catch (err: any) {
+                    console.error("PDF generation failed:", err);
+                    alert(`PDF generation failed: ${err?.message || String(err)}. Please check the browser console for details.`);
                 }
             }, 500);
         } else {
@@ -241,11 +226,68 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
     };
 
     const handleLoginSuccess = () => {
-        // Once logged in, attempt to finish again after a short delay
-        // This ensures the login modal has time to animate out and disappear from the DOM
-        setTimeout(() => {
-            handleFinish();
-        }, 500);
+        // Use the snapshot captured before the login modal opened.
+        // We do NOT re-call handleFinish() because auth state change may have
+        // triggered a form reset, giving us blank data.
+        const snapshot = pendingFormDataRef.current;
+        pendingFormDataRef.current = null;
+
+        if (!snapshot) {
+            // Fallback: no snapshot means we can just re-run handleFinish normally
+            setTimeout(() => handleFinish(), 500);
+            return;
+        }
+
+        const currentUser = auth.currentUser;
+        if (!currentUser) return;
+
+        // Save to Firestore using the snapshot
+        const cleanData = JSON.parse(JSON.stringify(snapshot));
+        const payload = { ...cleanData, updatedAt: new Date().toISOString() };
+        const savePromise = resumeId
+            ? setDoc(doc(db, "users", currentUser.uid, "resumes", resumeId), payload)
+            : addDoc(collection(db, "users", currentUser.uid, "resumes"), payload);
+        savePromise
+            .then(() => console.log("Saved to Firestore after login."))
+            .catch((err: any) => console.error("Firestore save failed:", err));
+
+        // Generate the PDF from the snapshot — delay to let the modal close
+        setTimeout(async () => {
+            const element = document.getElementById('resume-preview-container');
+            if (!element) { console.error('Preview element not found'); return; }
+
+            const fullName = cleanData.personalDetails?.fullName || 'resume';
+            try {
+                const [htmlToImageModule, jsPDFModule] = await Promise.all([
+                    import('html-to-image'),
+                    import('jspdf'),
+                ]);
+                const { toJpeg } = htmlToImageModule;
+                const jsPDF = jsPDFModule.default;
+
+                const imgData = await toJpeg(element as HTMLElement, {
+                    quality: 0.98, pixelRatio: 2, backgroundColor: '#ffffff',
+                });
+
+                const rect = element.getBoundingClientRect();
+                const pdfWidth = 210, pdfHeight = 297;
+                const ratio = pdfWidth / (rect.width * 2);
+                const scaledHeight = rect.height * 2 * ratio;
+
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                let yPos = 0;
+                while (yPos < scaledHeight) {
+                    if (yPos > 0) pdf.addPage();
+                    pdf.addImage(imgData, 'JPEG', 0, -yPos, pdfWidth, scaledHeight);
+                    yPos += pdfHeight;
+                }
+                pdf.save(`${fullName}.pdf`);
+                if (onReset) setTimeout(() => onReset(), 500);
+            } catch (err: any) {
+                console.error('PDF generation failed after login:', err);
+                alert(`PDF generation failed: ${err?.message || String(err)}`);
+            }
+        }, 700);
     };
 
     const CurrentStepComponent = activeSteps[currentStep]?.component;
