@@ -6,7 +6,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
-**Live Demo:** [https://resume-builder-six-peach-27.vercel.app](https://resume-builder-six-peach-27.vercel.app/)
+**Live Demo:** [https://resume-builder-mu-two-69.vercel.app](https://resume-builder-mu-two-69.vercel.app/)
 
 A highly interactive, modern, and beautiful Resume Builder application. Designed with a multi-step user experience, complete with live previews, cloud-based history saving via Google Authentication, and a direct print-to-PDF export mechanism.
 
@@ -20,7 +20,7 @@ A highly interactive, modern, and beautiful Resume Builder application. Designed
 - **Theme Color Customization:** Pick and choose primary accent colors for each unique section.
 - **Cloud History Saving:** Sign in securely with Google Auth to auto-save multiple versions of your resume into Firebase Firestore.
 - **Previous Work Library:** Browse through your past generated resumes and instantly populate the builder to update old data.
-- **Print & Download:** A clean CSS `@media print` layout engineered perfectly for exporting to PDF without any visual artifacts.
+- **Direct PDF Download:** Click Download to instantly save your resume as a professionally formatted A4 PDF directly to your device — no print dialog, no browser headers, powered by `html-to-image` and `jsPDF`.
 
 ## 🛠️ Tech Stack
 
