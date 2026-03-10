@@ -14,7 +14,7 @@ const defaultSectionLabels: Record<string, string> = {
 };
 
 export default function LayoutForm() {
-    const { control, watch, setValue } = useFormContext<ResumeData>();
+    const { watch, setValue } = useFormContext<ResumeData>();
 
     const sectionOrder = watch("sectionOrder") || [];
 

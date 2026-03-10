@@ -36,6 +36,7 @@ export function HistoryModal({ isOpen, onOpenChange, onSelect }: HistoryModalPro
         if (isOpen && user) {
             fetchHistory();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, user]);
 
     const fetchHistory = async () => {
@@ -82,7 +83,7 @@ export function HistoryModal({ isOpen, onOpenChange, onSelect }: HistoryModalPro
                 hour: 'numeric',
                 minute: 'numeric',
             }).format(date);
-        } catch (e) {
+        } catch {
             return "Invalid Date";
         }
     };
@@ -109,7 +110,7 @@ export function HistoryModal({ isOpen, onOpenChange, onSelect }: HistoryModalPro
                                 <FileText className="h-8 w-8 text-slate-400" />
                             </div>
                             <h3 className="text-lg font-medium text-slate-900">No resumes found</h3>
-                            <p>You haven't saved any resumes yet. Build one and click Download to save it to your history!</p>
+                            <p>You haven&apos;t saved any resumes yet. Build one and click Download to save it to your history!</p>
                         </div>
                     ) : (
                         <div className="grid gap-4 mt-4">

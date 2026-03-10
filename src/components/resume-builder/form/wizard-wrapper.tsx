@@ -44,6 +44,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
     const { user } = useAuth();
 
     const methods = useForm<ResumeData>({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: zodResolver(resumeSchema) as any,
         defaultValues: initialData,
         mode: "onBlur",
@@ -56,8 +57,6 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
     const {
         watch,
         trigger,
-        formState: { errors },
-        reset,
     } = methods;
 
     // Watch for changes and notify parent for the live preview
@@ -83,6 +82,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
     const nextStep = async () => {
         // Validate current section before moving
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let fieldsToValidate: any = [];
         const currentId = activeSteps[currentStep].id;
         switch (currentId) {
@@ -152,6 +152,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
             savePromise
                 .then(() => console.log("Successfully saved to Firestore."))
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 .catch((error: any) => console.error("Error saving resume to Firebase:", error));
 
             // Generate PDF directly without the print dialog
@@ -213,6 +214,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                     pdf.save(`${fullName}.pdf`);
 
                     if (onReset) setTimeout(() => onReset(), 500);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 } catch (err: any) {
                     console.error("PDF generation failed:", err);
                     alert(`PDF generation failed: ${err?.message || String(err)}. Please check the browser console for details.`);
@@ -249,6 +251,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
             : addDoc(collection(db, "users", currentUser.uid, "resumes"), payload);
         savePromise
             .then(() => console.log("Saved to Firestore after login."))
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .catch((err: any) => console.error("Firestore save failed:", err));
 
         // Generate the PDF from the snapshot — delay to let the modal close
@@ -283,6 +286,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                 }
                 pdf.save(`${fullName}.pdf`);
                 if (onReset) setTimeout(() => onReset(), 500);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 console.error('PDF generation failed after login:', err);
                 alert(`PDF generation failed: ${err?.message || String(err)}`);

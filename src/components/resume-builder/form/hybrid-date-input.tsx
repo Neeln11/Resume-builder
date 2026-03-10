@@ -5,9 +5,7 @@ import { Input } from "@/components/ui/input";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-interface HybridDateInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-
-}
+type HybridDateInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 export const HybridDateInput = forwardRef<HTMLInputElement, HybridDateInputProps>(
     ({ className, onChange, value, ...props }, ref) => {
@@ -18,7 +16,7 @@ export const HybridDateInput = forwardRef<HTMLInputElement, HybridDateInputProps
                 // To open the native date picker programmatically
                 try {
                     dateInputRef.current.showPicker();
-                } catch (e) {
+                } catch {
                     dateInputRef.current.focus();
                 }
             }

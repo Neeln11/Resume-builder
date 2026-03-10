@@ -54,7 +54,7 @@ export default function Home() {
       {/* Right side: Live Preview Pane */}
       <section className="flex-1 bg-slate-100 h-screen overflow-y-auto p-4 md:p-8 lg:p-12 print:p-0 print:h-auto print:bg-white print:overflow-visible flex justify-center items-start">
         <div className="sticky top-8 w-full flex justify-center print:static">
-          <div className="w-full max-w-[21cm] transition-all duration-300 ease-in-out shadow-2xl rounded-sm overflow-hidden print:shadow-none print:rounded-none">
+          <div className="w-full max-w-[210mm] aspect-[210/297] bg-white transition-all duration-300 ease-in-out shadow-2xl rounded-sm overflow-hidden print:shadow-none print:rounded-none">
             <ResumePreview data={resumeData} />
           </div>
         </div>

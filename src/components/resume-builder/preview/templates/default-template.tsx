@@ -17,7 +17,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
         personalDetails.leetcode;
 
     return (
-        <div className="p-8 max-w-[21cm] mx-auto bg-white text-slate-900 font-sans min-h-[29.7cm] break-words">
+        <div className="p-8 w-full mx-auto bg-white text-slate-900 font-sans min-h-full break-words">
             {/* Header section */}
             {hasPersonalDetails && (
                 <header className="mb-6 border-b border-slate-300 pb-4 text-center">
@@ -70,7 +70,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-2" style={{ color: themeConfig?.summary || "#1e293b" }}>
                                         {summary.heading || "Professional Summary"}
                                     </h2>
-                                    <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-wrap break-words [overflow-wrap:anywhere]">
+                                    <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-wrap break-words">
                                         {summary.summary}
                                     </p>
                                 </section>
@@ -84,15 +84,15 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                             <div key={index} className="min-w-0">
                                                 <div className="flex justify-between items-start mb-1 min-w-0">
                                                     <div className="min-w-0">
-                                                        <h3 className="font-semibold text-slate-800 break-words [overflow-wrap:anywhere]">{exp.role}</h3>
-                                                        <p className="text-sm text-slate-600 font-medium break-words [overflow-wrap:anywhere]">{exp.company}</p>
+                                                        <h3 className="font-semibold text-slate-800 break-words">{exp.role}</h3>
+                                                        <p className="text-sm text-slate-600 font-medium break-words">{exp.company}</p>
                                                     </div>
                                                     <div className="text-sm text-slate-500 whitespace-nowrap ml-4 shrink-0">
                                                         {exp.startDate} {exp.endDate ? `- ${exp.endDate}` : "- Present"}
                                                     </div>
                                                 </div>
                                                 {exp.description && (
-                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{exp.description}</p>
+                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap break-words">{exp.description}</p>
                                                 )}
                                             </div>
                                         ))}
@@ -107,7 +107,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                         {projects.map((project, index) => (
                                             <div key={index} className="min-w-0">
                                                 <div className="flex justify-between items-start mb-1 min-w-0">
-                                                    <h3 className="font-semibold text-slate-800 break-words [overflow-wrap:anywhere] min-w-0">
+                                                    <h3 className="font-semibold text-slate-800 break-words min-w-0">
                                                         {project.name}
                                                         {project.link && (
                                                             <a href={project.link} target="_blank" rel="noreferrer" className="text-blue-600 text-xs ml-2 hover:underline font-normal inline-block">
@@ -117,10 +117,10 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                                     </h3>
                                                 </div>
                                                 {project.technologies && (
-                                                    <p className="text-xs font-medium text-slate-500 mb-1 break-words [overflow-wrap:anywhere]">Technologies: {project.technologies}</p>
+                                                    <p className="text-xs font-medium text-slate-500 mb-1 break-words">Technologies: {project.technologies}</p>
                                                 )}
                                                 {project.description && (
-                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{project.description}</p>
+                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap break-words">{project.description}</p>
                                                 )}
                                             </div>
                                         ))}
@@ -136,15 +136,15 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                             <div key={index} className="min-w-0">
                                                 <div className="flex justify-between items-start mb-1 min-w-0">
                                                     <div className="min-w-0">
-                                                        <h3 className="font-semibold text-slate-800 break-words [overflow-wrap:anywhere]">{edu.degree}</h3>
-                                                        <p className="text-sm text-slate-600 font-medium break-words [overflow-wrap:anywhere]">{edu.institution}</p>
+                                                        <h3 className="font-semibold text-slate-800 break-words">{edu.degree}</h3>
+                                                        <p className="text-sm text-slate-600 font-medium break-words">{edu.institution}</p>
                                                     </div>
                                                     <div className="text-sm text-slate-500 whitespace-nowrap ml-4 shrink-0">
                                                         {edu.startDate} {edu.endDate ? `- ${edu.endDate}` : "- Present"}
                                                     </div>
                                                 </div>
                                                 {edu.description && (
-                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{edu.description}</p>
+                                                    <p className="text-sm text-slate-700 whitespace-pre-wrap break-words">{edu.description}</p>
                                                 )}
                                             </div>
                                         ))}
@@ -158,7 +158,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                                     <div className="flex flex-wrap gap-2">
                                         {skills.map((skill, index) => (
                                             skill.name && (
-                                                <span key={index} className="px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-md font-medium border border-slate-200">
+                                                <span key={index} className="inline-flex items-center justify-center px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-md font-medium border border-slate-200 whitespace-nowrap">
                                                     {skill.name}
                                                 </span>
                                             )
