@@ -165,7 +165,11 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                     return;
                 }
 
-                const fullName = cleanData.personalDetails?.fullName || 'resume';
+                const name = cleanData.personalDetails?.fullName || 'John_Doe';
+                const firstRole = cleanData.experience?.[0]?.role || '';
+                const cleanName = name.replace(/[^a-zA-Z0-9]/g, '_');
+                const cleanRole = firstRole.replace(/[^a-zA-Z0-9]/g, '_');
+                const fullName = [cleanName, cleanRole, 'Resume'].filter(Boolean).join('_');
 
                 try {
                     // html-to-image uses the browser's native rendering pipeline so it
@@ -259,7 +263,11 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
             const element = document.getElementById('resume-preview-container');
             if (!element) { console.error('Preview element not found'); return; }
 
-            const fullName = cleanData.personalDetails?.fullName || 'resume';
+            const name = cleanData.personalDetails?.fullName || 'John_Doe';
+            const firstRole = cleanData.experience?.[0]?.role || '';
+            const cleanName = name.replace(/[^a-zA-Z0-9]/g, '_');
+            const cleanRole = firstRole.replace(/[^a-zA-Z0-9]/g, '_');
+            const fullName = [cleanName, cleanRole, 'Resume'].filter(Boolean).join('_');
             try {
                 const [htmlToImageModule, jsPDFModule] = await Promise.all([
                     import('html-to-image'),
