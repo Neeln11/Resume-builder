@@ -3,7 +3,7 @@
 import { useFormContext } from "react-hook-form";
 import { ResumeData } from "@/lib/schema";
 import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown, GripVertical } from "lucide-react";
+import { ArrowUp, ArrowDown, GripVertical, Palette } from "lucide-react";
 
 const defaultSectionLabels: Record<string, string> = {
     summary: "Professional Summary",
@@ -28,8 +28,63 @@ export default function LayoutForm() {
         setValue("sectionOrder", newOrder, { shouldDirty: true, shouldValidate: true });
     };
 
+    const presetColors = [
+        { name: "Slate", value: "#1e293b" },
+        { name: "Ocean", value: "#0ea5e9" },
+        { name: "Emerald", value: "#10b981" },
+        { name: "Indigo", value: "#4f46e5" },
+        { name: "Rose", value: "#e11d48" },
+        { name: "Amber", value: "#d97706" }
+    ];
+
+    const currentThemeColor = watch("themeConfig.personalDetails") || "#1e293b";
+
+    const handleColorSelect = (colorValue: string) => {
+        setValue("themeConfig", {
+            personalDetails: colorValue,
+            summary: colorValue,
+            education: colorValue,
+            experience: colorValue,
+            projects: colorValue,
+            skills: colorValue,
+        }, { shouldDirty: true });
+    };
+
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* Theme Customization Section */}
+            <div className="space-y-4">
+                <div>
+                    <h3 className="text-lg font-medium flex items-center gap-2">
+                        <Palette className="w-5 h-5 text-indigo-500" />
+                        Color Theme
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                        Select an accent color to personalize your resume's design.
+                    </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                    {presetColors.map((color) => (
+                        <button
+                            key={color.value}
+                            type="button"
+                            onClick={() => handleColorSelect(color.value)}
+                            className={`w-10 h-10 rounded-full border-2 transition-all duration-200 ${
+                                currentThemeColor === color.value 
+                                    ? "border-slate-900 scale-110 shadow-md ring-2 ring-slate-900/20 ring-offset-2" 
+                                    : "border-transparent hover:scale-105 shadow-sm"
+                            }`}
+                            style={{ backgroundColor: color.value }}
+                            title={color.name}
+                            aria-label={`Select ${color.name} theme`}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            <hr className="border-slate-200" />
+
+            {/* Reorder Section */}
             <div>
                 <h3 className="text-lg font-medium">Reorder Sections</h3>
                 <p className="text-sm text-muted-foreground">
