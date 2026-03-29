@@ -29,6 +29,7 @@ export default function EducationForm() {
             {fields.map((field, index) => (
                 <Card key={field.id} className="relative">
                     <Button
+                        type="button"
                         variant="ghost"
                         size="icon"
                         className="absolute right-2 top-2 text-destructive hover:text-destructive"

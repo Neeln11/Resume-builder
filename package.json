@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/genai": "^1.47.0",
     "@hookform/resolvers": "^5.2.2",
     "@sparticuz/chromium-min": "^143.0.4",
     "class-variance-authority": "^0.7.1",

@@ -63,6 +63,7 @@ export const resumeSchema = z.object({
   skills: z.array(skillSchema),
   sectionOrder: z.array(z.string()).default(["summary", "experience", "education", "projects", "skills"]),
   themeConfig: themeConfigSchema.default({}),
+  template: z.string().default("default"),
 });
 
 export type PersonalDetails = z.infer<typeof personalDetailsSchema>;
@@ -100,4 +101,5 @@ export const defaultResumeData: ResumeData = {
     projects: "#1e293b",
     skills: "#1e293b",
   },
+  template: "default",
 };

@@ -67,6 +67,13 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
         return () => subscription.unsubscribe();
     }, [watch, onDataChange]);
 
+    // Sync external template changes (from the dropdown in page.tsx) into the form state so it saves correctly
+    useEffect(() => {
+        if (initialData.template && initialData.template !== methods.getValues("template")) {
+            methods.setValue("template", initialData.template, { shouldDirty: true });
+        }
+    }, [initialData.template, methods]);
+
     // Derive active steps based on sectionOrder
     const sectionOrder = watch("sectionOrder") || [];
 
@@ -157,7 +164,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
             // Generate PDF directly without the print dialog
             setTimeout(async () => {
-                const element = document.getElementById('resume-preview-container');
+                const element = document.getElementById('resume-a4-container');
 
                 if (!element) {
                     console.error("Could not find resume preview element");
@@ -187,6 +194,10 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                         quality: 0.98,
                         pixelRatio: 2,
                         backgroundColor: '#ffffff',
+                        filter: (node: Node) => {
+                            if (node instanceof HTMLElement && node.dataset.pdfIgnore === 'true') return false;
+                            return true;
+                        },
                     });
 
                     // Get element dimensions for correct PDF sizing
@@ -260,7 +271,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
         // Generate the PDF from the snapshot — delay to let the modal close
         setTimeout(async () => {
-            const element = document.getElementById('resume-preview-container');
+            const element = document.getElementById('resume-a4-container');
             if (!element) { console.error('Preview element not found'); return; }
 
             const name = cleanData.personalDetails?.fullName || 'John_Doe';
@@ -278,6 +289,10 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
                 const imgData = await toJpeg(element as HTMLElement, {
                     quality: 0.98, pixelRatio: 2, backgroundColor: '#ffffff',
+                    filter: (node: Node) => {
+                        if (node instanceof HTMLElement && node.dataset.pdfIgnore === 'true') return false;
+                        return true;
+                    },
                 });
 
                 const rect = element.getBoundingClientRect();

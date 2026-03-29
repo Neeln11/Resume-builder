@@ -67,7 +67,7 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                         case "summary":
                             return summary?.summary && (
                                 <section key="summary" className="mb-6 order-none w-full min-w-0">
-                                    <h2 className="text-lg font-semibold tracking-wide uppercase mb-2" style={{ color: themeConfig?.summary || "#1e293b" }}>
+                                    <h2 className="text-lg font-semibold tracking-wide uppercase mb-2 border-b pb-1" style={{ color: themeConfig?.summary || "#1e293b", borderColor: themeConfig?.summary || "#e2e8f0" }}>
                                         {summary.heading || "Professional Summary"}
                                     </h2>
                                     <p className="text-sm leading-relaxed text-slate-700 whitespace-pre-wrap break-words">
