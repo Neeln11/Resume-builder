@@ -40,9 +40,10 @@ export default function ExperienceForm() {
             const company = exp?.company || "Company";
             const currentDesc = exp?.description || "";
             
-            const bullets = await generateExperienceAction(role, company, currentDesc);
-            if (bullets) {
-                setValue(`experience.${index}.description`, bullets, { shouldValidate: true });
+            const response = await generateExperienceAction(role, company, currentDesc);
+            if (response.error) throw new Error(response.error);
+            if (response.content) {
+                setValue(`experience.${index}.description`, response.content, { shouldValidate: true });
             }
         } catch (err: any) {
             setErrorIndex(index);

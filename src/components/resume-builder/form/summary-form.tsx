@@ -36,9 +36,10 @@ export default function SummaryForm() {
                 context += ` Current/Recent Role: ${exp.role} at ${exp.company}.`;
             }
             
-            const summary = await generateSummaryAction(context, currentSummary);
-            if (summary) {
-                setValue("summary.summary", summary, { shouldValidate: true });
+            const response = await generateSummaryAction(context, currentSummary);
+            if (response.error) throw new Error(response.error);
+            if (response.content) {
+                setValue("summary.summary", response.content, { shouldValidate: true });
             }
         } catch (err: any) {
             setError(err.message || "Something went wrong.");

@@ -6,7 +6,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export async function generateSummaryAction(context: string, currentSummary?: string) {
     if (!process.env.GEMINI_API_KEY) {
-        throw new Error("Gemini API key is not configured. Please add it to your .env.local file.");
+        return { error: "Gemini API key is not configured. Please add it to your .env.local file." };
     }
 
     const prompt = `Write a compelling professional resume summary for a resume.
@@ -20,16 +20,16 @@ Ensure the summary is 3-5 sentences, impactful, and written in the third person 
             contents: prompt,
         });
 
-        return response.text;
+        return { content: response.text };
     } catch (error) {
         console.error("Gemini Error:", error);
-        throw new Error("Failed to generate summary. Please try again.");
+        return { error: "Failed to generate summary. Please try again." };
     }
 }
 
 export async function generateExperienceAction(role: string, company: string, currentDescription: string) {
     if (!process.env.GEMINI_API_KEY) {
-        throw new Error("Gemini API key is not configured. Please add it to your .env.local file.");
+        return { error: "Gemini API key is not configured. Please add it to your .env.local file." };
     }
 
     const prompt = `Write professional resume bullet points for a ${role} at ${company}.
@@ -42,16 +42,16 @@ Format the output as a clean bulleted list using the '-' character. Make it acti
             contents: prompt,
         });
 
-        return response.text;
+        return { content: response.text };
     } catch (error) {
         console.error("Gemini Error:", error);
-        throw new Error("Failed to generate experience bullet points. Please try again.");
+        return { error: "Failed to generate experience bullet points. Please try again." };
     }
 }
 
 export async function generateProjectAction(name: string, technologies: string, currentDescription: string) {
     if (!process.env.GEMINI_API_KEY) {
-        throw new Error("Gemini API key is not configured. Please add it to your .env.local file.");
+        return { error: "Gemini API key is not configured. Please add it to your .env.local file." };
     }
 
     const prompt = `Write professional resume bullet points for a project named "${name}".
@@ -65,9 +65,9 @@ Format the output as a clean bulleted list using the '-' character. Make it acti
             contents: prompt,
         });
 
-        return response.text;
+        return { content: response.text };
     } catch (error) {
         console.error("Gemini Error:", error);
-        throw new Error("Failed to generate project bullet points. Please try again.");
+        return { error: "Failed to generate project bullet points. Please try again." };
     }
 }

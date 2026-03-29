@@ -39,9 +39,10 @@ export default function ProjectsForm() {
             const tech = proj?.technologies || "";
             const currentDesc = proj?.description || "";
             
-            const bullets = await generateProjectAction(name, tech, currentDesc);
-            if (bullets) {
-                setValue(`projects.${index}.description`, bullets, { shouldValidate: true });
+            const response = await generateProjectAction(name, tech, currentDesc);
+            if (response.error) throw new Error(response.error);
+            if (response.content) {
+                setValue(`projects.${index}.description`, response.content, { shouldValidate: true });
             }
         } catch (err: any) {
             setErrorIndex(index);
