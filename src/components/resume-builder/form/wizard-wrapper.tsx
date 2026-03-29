@@ -186,13 +186,12 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                         import('html-to-image'),
                         import('jspdf'),
                     ]);
-                    const { toJpeg } = htmlToImageModule;
+                    const { toPng } = htmlToImageModule;
                     const jsPDF = jsPDFModule.default;
 
-                    // Render the resume element to a JPEG data URL
-                    const imgData = await toJpeg(element as HTMLElement, {
-                        quality: 0.98,
-                        pixelRatio: 2,
+                    // Render the resume element to a high-res PNG data URL for lossless text
+                    const imgData = await toPng(element as HTMLElement, {
+                        pixelRatio: 4, // 4x scale for high DPI (fixes zoom blur)
                         backgroundColor: '#ffffff',
                         filter: (node: Node) => {
                             if (node instanceof HTMLElement && node.dataset.pdfIgnore === 'true') return false;
@@ -202,8 +201,8 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
                     // Get element dimensions for correct PDF sizing
                     const rect = element.getBoundingClientRect();
-                    const imgWidthPx = rect.width * 2;  // pixelRatio: 2
-                    const imgHeightPx = rect.height * 2;
+                    const imgWidthPx = rect.width * 4;
+                    const imgHeightPx = rect.height * 4;
 
                     // A4 dimensions in mm
                     const pdfWidth = 210;
@@ -222,7 +221,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                     let yPos = 0;
                     while (yPos < scaledHeight) {
                         if (yPos > 0) pdf.addPage();
-                        pdf.addImage(imgData, 'JPEG', 0, -yPos, pdfWidth, scaledHeight);
+                        pdf.addImage(imgData, 'PNG', 0, -yPos, pdfWidth, scaledHeight, '', 'FAST');
                         yPos += pdfHeight;
                     }
 
@@ -284,11 +283,11 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                     import('html-to-image'),
                     import('jspdf'),
                 ]);
-                const { toJpeg } = htmlToImageModule;
+                const { toPng } = htmlToImageModule;
                 const jsPDF = jsPDFModule.default;
 
-                const imgData = await toJpeg(element as HTMLElement, {
-                    quality: 0.98, pixelRatio: 2, backgroundColor: '#ffffff',
+                const imgData = await toPng(element as HTMLElement, {
+                    pixelRatio: 4, backgroundColor: '#ffffff',
                     filter: (node: Node) => {
                         if (node instanceof HTMLElement && node.dataset.pdfIgnore === 'true') return false;
                         return true;
@@ -297,14 +296,14 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
                 const rect = element.getBoundingClientRect();
                 const pdfWidth = 210, pdfHeight = 297;
-                const ratio = pdfWidth / (rect.width * 2);
-                const scaledHeight = rect.height * 2 * ratio;
+                const ratio = pdfWidth / (rect.width * 4);
+                const scaledHeight = rect.height * 4 * ratio;
 
                 const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
                 let yPos = 0;
                 while (yPos < scaledHeight) {
                     if (yPos > 0) pdf.addPage();
-                    pdf.addImage(imgData, 'JPEG', 0, -yPos, pdfWidth, scaledHeight);
+                    pdf.addImage(imgData, 'PNG', 0, -yPos, pdfWidth, scaledHeight, '', 'FAST');
                     yPos += pdfHeight;
                 }
                 pdf.save(`${fullName}.pdf`);
