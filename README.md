@@ -8,19 +8,20 @@
 
 **Live Demo:** [https://resume-builder-mu-two-69.vercel.app](https://resume-builder-mu-two-69.vercel.app/)
 
-A highly interactive, modern, and beautiful Resume Builder application. Designed with a multi-step user experience, complete with live previews, cloud-based history saving via Google Authentication, and a direct print-to-PDF export mechanism.
+A highly interactive, modern, and beautiful Resume Builder application. Designed with a landing-page-to-dashboard workflow, multi-step builder wizard, cloud-based history saving via Firebase, AI-powered writing assistance, and pixel-perfect PDF export.
 
 ---
 
 ## ✨ Features
 
-- **Multi-Step Form Wizard:** Seamlessly navigate between Personal Details, Summary, Education, Experience, Projects, and Skills.
-- **Real-time Live Preview:** Watch your resume render on a beautiful A4 page exactly as you type.
-- **Drag & Drop Section Ordering:** Rearrange the layout of your resume sections dynamically.
-- **Theme Color Customization:** Pick and choose primary accent colors for each unique section.
-- **Cloud History Saving:** Sign in securely with Google Auth to auto-save multiple versions of your resume into Firebase Firestore.
-- **Previous Work Library:** Browse through your past generated resumes and instantly populate the builder to update old data.
-- **Direct PDF Download:** Click Download to instantly save your resume as a professionally formatted A4 PDF directly to your device — no print dialog, no browser headers, powered by `html-to-image` and `jsPDF`.
+- **Smart Routing Workflow:** Dedicated high-conversion Landing Page for guests, automatically routing authenticated users to their secure Resume Dashboard.
+- **Resume Dashboard:** A central hub to view, edit, reproduce, and delete previously built resumes stored in the cloud.
+- **AI Writing Assistant:** Integrated with Gemini AI to generate professional summaries and experience bullet points based on your input.
+- **Dynamic Multi-Step Builder:** Seamlessly navigate between Personal Details, Summary, Education, Experience, Projects, and Skills.
+- **3 Premium Templates:** Choose between Standard Professional, Clean Minimalist, and Modern Creative layouts.
+- **Real-time Auto-Scaling Preview:** Watch your resume render live. If content exceeds A4 length, the engine dynamically auto-scales the font and layout to guarantee a perfect single-page fit.
+- **Cloud History Saving:** Sign in securely with Google Auth to auto-save resumes into Firebase Firestore.
+- **Direct PDF Download:** Click Download to instantly save your perfectly scaled A4 PDF directly to your device — powered by `html-to-image` and `jsPDF`.
 
 ## 🛠️ Tech Stack
 
