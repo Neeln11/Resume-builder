@@ -18,10 +18,11 @@ A highly interactive, modern, and beautiful Resume Builder application. Designed
 - **Resume Dashboard:** A central hub to view, edit, reproduce, and delete previously built resumes stored in the cloud.
 - **AI Writing Assistant:** Integrated with Gemini AI to generate professional summaries and experience bullet points based on your input.
 - **Dynamic Multi-Step Builder:** Seamlessly navigate between Personal Details, Summary, Education, Experience, Projects, and Skills.
+- **Mobile-First Responsive UI:** Build your resume on the go with a native-feeling Tab interface that intelligently switches between the Edit Form and Live Preview without horizontal scrolling.
 - **3 Premium Templates:** Choose between Standard Professional, Clean Minimalist, and Modern Creative layouts.
-- **Real-time Auto-Scaling Preview:** Watch your resume render live. If content exceeds A4 length, the engine dynamically auto-scales the font and layout to guarantee a perfect single-page fit.
+- **Real-time Auto-Scaling Preview:** Watch your resume render live. If content exceeds A4 length, the engine dynamically auto-scales the font and layout to guarantee a perfect single-page fit across all devices.
 - **Cloud History Saving:** Sign in securely with Google Auth to auto-save resumes into Firebase Firestore.
-- **Direct PDF Download:** Click Download to instantly save your perfectly scaled A4 PDF directly to your device — powered by `html-to-image` and `jsPDF`.
+- **Direct PDF Download:** Click Download to instantly save your perfectly scaled A4 PDF directly to your device. Powered by `html-to-image` and `jsPDF`, utilizing a flawless mathematical rendering engine stored invisibly in the DOM to prevent clipping and floating-point page bleed on all devices.
 
 ## 🛠️ Tech Stack
 

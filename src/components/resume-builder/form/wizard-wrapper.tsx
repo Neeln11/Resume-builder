@@ -164,11 +164,11 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
             // Generate PDF directly without the print dialog
             setTimeout(async () => {
-                const element = document.getElementById('resume-a4-container');
+                const element = document.getElementById('pdf-resume-capture');
 
                 if (!element) {
                     console.error("Could not find resume preview element");
-                    window.print();
+                    alert("System error: Could not find the PDF rendering layer. Please refresh and try again.");
                     return;
                 }
 
@@ -218,8 +218,10 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                     });
 
                     // Add image page by page if content is taller than one A4 page
+                    // We use an incredibly small epsilon (1mm) to prevent Javascript floating point
+                    // inaccuracies (e.g. 297.015 > 297.0) from improperly adding a blank second page.
                     let yPos = 0;
-                    while (yPos < scaledHeight) {
+                    while (yPos < scaledHeight - 1) {
                         if (yPos > 0) pdf.addPage();
                         pdf.addImage(imgData, 'PNG', 0, -yPos, pdfWidth, scaledHeight, '', 'FAST');
                         yPos += pdfHeight;
@@ -228,7 +230,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                     pdf.save(`${fullName}.pdf`);
 
                     if (onReset) setTimeout(() => onReset(), 500);
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 } catch (err: any) {
                     console.error("PDF generation failed:", err);
                     alert(`PDF generation failed: ${err?.message || String(err)}. Please check the browser console for details.`);
@@ -270,8 +272,12 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
         // Generate the PDF from the snapshot — delay to let the modal close
         setTimeout(async () => {
-            const element = document.getElementById('resume-a4-container');
-            if (!element) { console.error('Preview element not found'); return; }
+            const element = document.getElementById('pdf-resume-capture');
+            if (!element) { 
+                console.error("System error: Could not find the PDF rendering layer");
+                alert("Failed to render PDF. Please refresh."); 
+                return; 
+            }
 
             const name = cleanData.personalDetails?.fullName || 'John_Doe';
             const firstRole = cleanData.experience?.[0]?.role || '';
@@ -301,14 +307,14 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
 
                 const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
                 let yPos = 0;
-                while (yPos < scaledHeight) {
+                while (yPos < scaledHeight - 1) {
                     if (yPos > 0) pdf.addPage();
                     pdf.addImage(imgData, 'PNG', 0, -yPos, pdfWidth, scaledHeight, '', 'FAST');
                     yPos += pdfHeight;
                 }
                 pdf.save(`${fullName}.pdf`);
                 if (onReset) setTimeout(() => onReset(), 500);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 console.error('PDF generation failed after login:', err);
                 alert(`PDF generation failed: ${err?.message || String(err)}`);

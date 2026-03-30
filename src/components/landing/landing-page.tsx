@@ -96,7 +96,7 @@ export default function LandingPage() {
             </nav>
 
             {/* Hero */}
-            <section className="pt-32 pb-24 px-6 text-center relative overflow-hidden">
+            <section className="pt-28 pb-20 px-4 sm:px-6 text-center relative overflow-hidden">
                 {/* Background Gradient */}
                 <div className="absolute inset-0 -z-10">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-50 rounded-full blur-3xl opacity-60" />
@@ -108,14 +108,14 @@ export default function LandingPage() {
                         Powered by Gemini AI
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
                         Build a resume that{" "}
                         <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                             gets you hired
                         </span>
                     </h1>
 
-                    <p className="text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    <p className="text-base sm:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
                         Create a professional, ATS-friendly resume in minutes — not hours. Our AI writes the content, you take the credit.
                     </p>
 
@@ -151,10 +151,10 @@ export default function LandingPage() {
             </section>
 
             {/* Features */}
-            <section className="py-24 px-6 bg-slate-50">
+            <section className="py-16 sm:py-24 px-4 sm:px-6 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-slate-900 mb-4">Everything you need to land the job</h2>
+                        <h2 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-4">Everything you need to land the job</h2>
                         <p className="text-lg text-slate-500 max-w-xl mx-auto">
                             From content generation to export — we have built all the tools right in.
                         </p>
@@ -178,9 +178,9 @@ export default function LandingPage() {
             </section>
 
             {/* CTA Footer */}
-            <section className="py-24 px-6 bg-slate-900 text-white text-center">
+            <section className="py-16 sm:py-24 px-4 sm:px-6 bg-slate-900 text-white text-center">
                 <div className="max-w-2xl mx-auto">
-                    <h2 className="text-4xl font-bold mb-4">Your next job starts here</h2>
+                    <h2 className="text-2xl sm:text-4xl font-bold mb-4">Your next job starts here</h2>
                     <p className="text-slate-400 text-lg mb-10">
                         Join thousands of job seekers who have built standout resumes with ResumeBuilder.
                     </p>

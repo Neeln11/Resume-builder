@@ -101,7 +101,7 @@ export default function DashboardPage() {
         <div className="min-h-screen bg-slate-50 font-sans">
             {/* Topbar */}
             <header className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
-                <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2.5">
                         <div className="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center text-white font-bold text-sm">
                             RB
@@ -130,11 +130,11 @@ export default function DashboardPage() {
                 </div>
             </header>
 
-            <main className="max-w-6xl mx-auto px-6 py-12">
+            <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
                 {/* Welcome Banner */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
                     <div>
-                        <h1 className="text-3xl font-bold text-slate-900">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
                             Welcome back, {user?.displayName?.split(" ")[0]} 👋
                         </h1>
                         <p className="text-slate-500 mt-1">
