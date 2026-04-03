@@ -17,6 +17,8 @@ A highly interactive, modern, and beautiful Resume Builder application. Designed
 - **Smart Routing Workflow:** Dedicated high-conversion Landing Page for guests, automatically routing authenticated users to their secure Resume Dashboard.
 - **Resume Dashboard:** A central hub to view, edit, reproduce, and delete previously built resumes stored in the cloud.
 - **AI Writing Assistant:** Integrated with Gemini AI to generate professional summaries and experience bullet points based on your input.
+- **ATS Analyzer & Auto-Implementer:** Grade your resume's Applicant Tracking System (ATS) score using AI. View missing keywords and instantly apply optimized "1-click" intelligent text corrections right into your resume fields.
+- **Categorized Skills Engine:** Build categorized hierarchical skill sections (e.g. "Frontend", "Backend", "Tools") for perfectly segmented and readable rendering across all templates.
 - **Dynamic Multi-Step Builder:** Seamlessly navigate between Personal Details, Summary, Education, Experience, Projects, and Skills.
 - **Mobile-First Responsive UI:** Build your resume on the go with a native-feeling Tab interface that intelligently switches between the Edit Form and Live Preview without horizontal scrolling.
 - **3 Premium Templates:** Choose between Standard Professional, Clean Minimalist, and Modern Creative layouts.
@@ -60,6 +62,7 @@ NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
 ### 4. Run the development server
