@@ -17,7 +17,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
-import { SectionColorPicker } from "./section-color-picker";
 
 export default function ExperienceForm() {
     const { control, getValues, setValue } = useFormContext();
@@ -55,7 +54,6 @@ export default function ExperienceForm() {
 
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <SectionColorPicker name="experience" label="Experience Section Color" />
             {fields.map((field, index) => (
                 <Card key={field.id} className="relative">
                     <Button

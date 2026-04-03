@@ -136,10 +136,17 @@ export default function MinimalTemplate({ data }: MinimalTemplateProps) {
                             return skills && skills.length > 0 && (
                                 <section key="skills" className="w-full min-w-0 flex flex-col md:flex-row gap-6 md:gap-12">
                                     <h2 className="text-xs uppercase tracking-[0.2em] font-medium text-slate-400 w-40 shrink-0 pt-1">Skills</h2>
-                                    <div className="flex-1 max-w-3xl min-w-0">
-                                        <p className="text-[13px] tracking-wide text-slate-800 leading-relaxed font-mono">
-                                            {skills.filter(s => s.name).map(s => s.name).join("  //  ")}
-                                        </p>
+                                    <div className="flex-1 max-w-3xl min-w-0 space-y-5">
+                                        {skills.map((category, index) => (
+                                            category.title && category.skills && category.skills.length > 0 && (
+                                                <div key={index} className="min-w-0">
+                                                    <h3 className="text-sm font-semibold text-slate-900 mb-1.5">{category.title}</h3>
+                                                    <p className="text-[13px] tracking-wide text-slate-800 leading-relaxed font-mono">
+                                                        {category.skills.filter(s => s.name).map(s => s.name).join("  //  ")}
+                                                    </p>
+                                                </div>
+                                            )
+                                        ))}
                                     </div>
                                 </section>
                             );

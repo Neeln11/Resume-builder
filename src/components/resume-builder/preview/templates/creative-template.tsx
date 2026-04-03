@@ -149,11 +149,20 @@ export default function CreativeTemplate({ data }: CreativeTemplateProps) {
                             return skills && skills.length > 0 && (
                                 <section key="skills" className="w-full min-w-0">
                                     <h2 className="text-xl font-bold mb-4 border-l-4 pl-3" style={{ borderColor: primaryColor, color: primaryColor }}>Skills</h2>
-                                    <div className="flex flex-wrap gap-2">
-                                        {skills.filter(s => s.name).map((skill, index) => (
-                                            <span key={index} className="px-3 py-1 bg-slate-800 text-white text-sm rounded-full font-medium shadow-sm transition-transform hover:scale-105 cursor-default">
-                                                {skill.name}
-                                            </span>
+                                    <div className="space-y-5">
+                                        {skills.map((category, index) => (
+                                            category.title && (
+                                                <div key={index} className="min-w-0">
+                                                    <h3 className="font-bold text-sm text-slate-700 uppercase tracking-widest mb-3 opacity-80">{category.title}</h3>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {category.skills && category.skills.filter(s => s.name).map((skill, sIdx) => (
+                                                            <span key={sIdx} className="px-3 py-1 bg-slate-800 text-white text-sm rounded-full font-medium shadow-sm transition-transform hover:scale-105 cursor-default">
+                                                                {skill.name}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )
                                         ))}
                                     </div>
                                 </section>

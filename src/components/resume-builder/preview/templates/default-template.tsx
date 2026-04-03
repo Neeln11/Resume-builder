@@ -155,12 +155,21 @@ export default function DefaultTemplate({ data }: DefaultTemplateProps) {
                             return skills && skills.length > 0 && (
                                 <section key="skills" className="mb-6 order-none w-full min-w-0">
                                     <h2 className="text-lg font-semibold tracking-wide uppercase mb-3 border-b pb-1" style={{ color: themeConfig?.skills || "#1e293b", borderColor: themeConfig?.skills || "#e2e8f0" }}>Skills</h2>
-                                    <div className="flex flex-wrap gap-2">
-                                        {skills.map((skill, index) => (
-                                            skill.name && (
-                                                <span key={index} className="inline-flex items-center justify-center px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-md font-medium border border-slate-200 whitespace-nowrap">
-                                                    {skill.name}
-                                                </span>
+                                    <div className="space-y-4">
+                                        {skills.map((category, index) => (
+                                            category.title && (
+                                                <div key={index} className="min-w-0">
+                                                    <h3 className="text-sm border-b-2 border-slate-100 font-semibold mb-2 text-slate-700 tracking-wide inline-block pb-1">{category.title}</h3>
+                                                    <div className="flex flex-wrap gap-2 mt-2">
+                                                        {category.skills && category.skills.map((skill, sIdx) => (
+                                                            skill.name && (
+                                                                <span key={sIdx} className="inline-flex items-center justify-center px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-md font-medium border border-slate-200 whitespace-nowrap">
+                                                                    {skill.name}
+                                                                </span>
+                                                            )
+                                                        ))}
+                                                    </div>
+                                                </div>
                                             )
                                         ))}
                                     </div>

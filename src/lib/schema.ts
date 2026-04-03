@@ -40,9 +40,15 @@ export const projectSchema = z.object({
   link: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });
 
-export const skillSchema = z.object({
+export const skillItemSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, "Skill is required"),
+});
+
+export const skillSchema = z.object({
+  id: z.string().optional(),
+  title: z.string().min(1, "Category title is required"),
+  skills: z.array(skillItemSchema),
 });
 
 export const themeConfigSchema = z.object({
@@ -71,6 +77,7 @@ export type ProfessionalSummary = z.infer<typeof professionalSummarySchema>;
 export type Education = z.infer<typeof educationSchema>;
 export type Experience = z.infer<typeof experienceSchema>;
 export type Project = z.infer<typeof projectSchema>;
+export type SkillItem = z.infer<typeof skillItemSchema>;
 export type Skill = z.infer<typeof skillSchema>;
 export type ThemeConfig = z.infer<typeof themeConfigSchema>;
 export type ResumeData = z.infer<typeof resumeSchema>;

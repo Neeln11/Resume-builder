@@ -9,14 +9,12 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SectionColorPicker } from "./section-color-picker";
 
 export default function PersonalDetailsForm() {
     const { control } = useFormContext();
 
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <SectionColorPicker name="personalDetails" label="Header Theme Color" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                     control={control}

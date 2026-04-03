@@ -22,6 +22,8 @@ import { useAuth } from "@/components/auth/auth-context";
 import { LoginModal } from "@/components/auth/login-modal";
 import { auth, db } from "@/lib/firebase";
 import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import { Sparkles } from "lucide-react";
+import { ATSModal } from "../ats-modal";
 
 const availableSections: Record<string, { title: string; component: React.ElementType }> = {
     summary: { title: "Professional Summary", component: SummaryForm },
@@ -41,12 +43,23 @@ interface WizardWrapperProps {
 export default function WizardWrapper({ initialData = defaultResumeData, resumeId = null, onDataChange, onReset }: WizardWrapperProps) {
     const [currentStep, setCurrentStep] = useState(0);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isATSModalOpen, setIsATSModalOpen] = useState(false);
     const { user } = useAuth();
+
+    const safeInitialData = { ...initialData };
+    // Cleanup legacy skills if they are present
+    if (safeInitialData.skills && safeInitialData.skills.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const firstSkill = safeInitialData.skills[0] as any;
+        if (firstSkill.name !== undefined && firstSkill.title === undefined) {
+            safeInitialData.skills = [];
+        }
+    }
 
     const methods = useForm<ResumeData>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: zodResolver(resumeSchema) as any,
-        defaultValues: initialData,
+        defaultValues: safeInitialData,
         mode: "onBlur",
     });
 
@@ -341,7 +354,7 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                         <CurrentStepComponent />
                     </div>
 
-                    <div className="flex justify-between mt-6 pt-4 border-t">
+                    <div className="flex justify-between items-center mt-6 pt-4 border-t">
                         <Button
                             type="button"
                             variant="outline"
@@ -350,6 +363,20 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                         >
                             Previous
                         </Button>
+
+                        <div className="flex-1 flex justify-center px-4">
+                            {currentStep === activeSteps.length - 1 && (
+                                <Button 
+                                    type="button" 
+                                    variant="secondary" 
+                                    onClick={() => setIsATSModalOpen(true)}
+                                    className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-semibold shadow-sm transition-all"
+                                >
+                                    <Sparkles className="w-4 h-4 mr-2 text-indigo-500" /> ATS Score Check
+                                </Button>
+                            )}
+                        </div>
+
                         {currentStep < activeSteps.length - 1 ? (
                             <Button type="button" onClick={nextStep}>
                                 Next Step
@@ -361,6 +388,8 @@ export default function WizardWrapper({ initialData = defaultResumeData, resumeI
                         )}
                     </div>
                 </form>
+
+                <ATSModal isOpen={isATSModalOpen} onOpenChange={setIsATSModalOpen} />
             </FormProvider>
 
             <LoginModal
