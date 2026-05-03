@@ -19,7 +19,7 @@ interface LoginModalProps {
 }
 
 export function LoginModal({ isOpen, onOpenChange, onSuccess }: LoginModalProps) {
-    const { signInWithGoogle } = useAuth();
+    const { signInWithGoogle, authError } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSignIn = async () => {
@@ -75,6 +75,9 @@ export function LoginModal({ isOpen, onOpenChange, onSuccess }: LoginModalProps)
                         )}
                         Sign in with Google
                     </Button>
+                    {authError ? (
+                        <p className="text-sm text-red-600 text-center">{authError}</p>
+                    ) : null}
                 </div>
             </DialogContent>
         </Dialog>
