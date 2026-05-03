@@ -7,6 +7,7 @@ import {
     User,
     getRedirectResult,
     onAuthStateChanged,
+    signInWithPopup,
     signInWithRedirect,
     signOut as firebaseSignOut
 } from "firebase/auth";
@@ -40,6 +41,10 @@ function mapFirebaseAuthError(error: unknown): string {
             return "Browser blocked the sign-in window. Please allow popups for this site and try again.";
         case "auth/cancelled-popup-request":
             return "Another sign-in request interrupted this one. Please try again.";
+        case "auth/popup-closed-by-user":
+            return "Sign-in window was closed before completing login. Please try again.";
+        case "auth/network-request-failed":
+            return "Network error while signing in. Check your connection and try again.";
         default:
             return "Google sign-in failed. Please try again.";
     }
@@ -78,9 +83,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
             setAuthError(null);
             await setPersistence(auth, browserLocalPersistence);
-            await signInWithRedirect(auth, googleProvider);
+            await signInWithPopup(auth, googleProvider);
         } catch (error) {
-            console.error("Error signing in with Google:", error);
+            const code = (error as { code?: string })?.code;
+
+            // Popup can fail in strict browsers/webviews; redirect is a reliable fallback.
+            if (code === "auth/popup-blocked" || code === "auth/cancelled-popup-request") {
+                try {
+                    await signInWithRedirect(auth, googleProvider);
+                    return;
+                } catch (redirectError) {
+                    console.error("Error signing in with Google redirect fallback:", redirectError);
+                    setAuthError(mapFirebaseAuthError(redirectError));
+                    throw redirectError;
+                }
+            }
+
+            console.error("Error signing in with Google popup:", error);
             setAuthError(mapFirebaseAuthError(error));
             throw error;
         }
